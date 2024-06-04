@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghibli Films</title>
+</head>
+<body>
+    <button onclick="listTitlesAndDirectors()">Listar títulos y directores</button>
+    <button onclick="listTitlesAndYears()">Listar títulos y años</button>
+    <button onclick="listTitlesAndDescriptions()">Listar títulos y descripciones</button>
+    <button onclick="listIds()">Listar IDs de películas</button>
+
+    <script>
+        let filmsData;
+
+        function fetchData() {
+            fetch('https://ghibliapi.herokuapp.com/films')
+                .then(response => response.json())
+                .then(data => {
+                    filmsData = data;
+                    console.log('Datos cargados correctamente.');
+                })
+                .catch(error => console.error('Error al cargar los datos:', error));
+        }
+
+        function listTitlesAndDirectors() {
+            if (!filmsData) {
+                console.log('Por favor, carga los datos primero.');
+                return;
+            }
+            filmsData.forEach(film => {
+                console.log(`${film.title} - Director: ${film.director}`);
+            });
+        }
+
+        function listTitlesAndYears() {
+            if (!filmsData) {
+                console.log('Por favor, carga los datos primero.');
+                return;
+            }
+            filmsData.forEach(film => {
+                console.log(`${film.title} - Año: ${film.release_date}`);
+            });
+        }
+
+        function listTitlesAndDescriptions() {
+            if (!filmsData) {
+                console.log('Por favor, carga los datos primero.');
+                return;
+            }
+            filmsData.forEach(film => {
+                console.log(`${film.title} - Descripción: ${film.description}`);
+            });
+        }
+
+        function listIds() {
+            if (!filmsData) {
+                console.log('Por favor, carga los datos primero.');
+                return;
+            }
+            filmsData.forEach(film => {
+                console.log(`${film.title} - ID: ${film.id}`);
+            });
+        }
+
+        // Esta función asegura que los datos se carguen solo la primera vez que se presiona un botón
+        let dataLoaded = false;
+        function loadDataOnce() {
+            if (!dataLoaded) {
+                fetchData();
+                dataLoaded = true;
+            }
+        }
+    </script>
+</body>
+</html>
